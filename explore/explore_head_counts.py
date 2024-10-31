@@ -31,6 +31,8 @@ for ds_id, var_name in dataset_vars.items():
             print(f"  Number of documents: {loaded_datasets[var_name].docs_count()}")
         if hasattr(loaded_datasets[var_name], 'queries_count'):
             print(f"  Number of queries: {loaded_datasets[var_name].queries_count()}")
+        if hasattr(loaded_datasets[var_name], 'qrels'):
+            print(f"  Number of qrels: {loaded_datasets[var_name].qrels}")
     except Exception as e:
         print(f"Error loading dataset {var_name}: {e}")
     print("=" * 40)
@@ -47,9 +49,9 @@ persian_datasets = {
 # display head of selected Persian dataset
 for var_name, dataset in persian_datasets.items():
     print(f"First document from dataset: {var_name}")
-    documents = [doc for doc in dataset.docs_iter()]
+    documents = [doc for doc in dataset.docs_iter()[:10]]
     df = pd.DataFrame(documents)
-    print(df.head(1))
+    print(df.head())
     print("=" * 40)
 
 """### EXPLORE RUSSIAN DOC ###

@@ -1,6 +1,6 @@
 import pandas as pd
 import ir_datasets
-from Zain.explore.funcs import calculate_average_document_length 
+from explore.funcs import calculate_average_document_length
 
 # mapping dataset to variable names
 dataset_vars = {

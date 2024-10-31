@@ -1,5 +1,5 @@
 import ir_datasets
-from Zain.explore.funcs import analyze_query 
+from explore.funcs import analyze_query
 
 # dataset mapping
 dataset_vars = {

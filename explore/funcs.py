@@ -1,3 +1,4 @@
+import ir_datasets
 import pandas as pd
 
 def calculate_average_document_length(datasets):
@@ -57,3 +58,21 @@ def analyze_query(datasets, query=None):
             results["query_counts"][var_name] = len(matching_docs)
     
     return results
+
+def load_datasets(languages):
+    datasets = {}
+    for lang in languages:
+        try:
+            datasets[lang] = ir_datasets.load(f"neuclir/1/{lang}/hc4-filtered")
+        except Exception as e:
+            print(f"Error loading dataset for {lang}: {e}")
+    return datasets
+
+def get_docs(dataset):
+    return pd.DataFrame([doc for doc in dataset.docs_iter()])
+
+def get_documents(datasets, **num_docs):
+    documents = {}
+    for lang, dataset in datasets.items():
+        documents[lang] = pd.DataFrame([doc for doc in dataset.docs_iter()[:num_docs]])
+    return documents

@@ -48,7 +48,7 @@ def evaluate_retrieval(retrieval_results, qrels):
 if __name__ == "__main__":
     # Load datasets
     datasets = load_datasets()
-    data = load_data(datasets, lang='ru', sample_ratio=1.0, max_size=None) # specify based on comment in data_exploration.py
+    data = load_data(datasets, lang='ru', sample_ratio=0.02, max_size=None) # specify based on comment in data_exploration.py
 
     # generate embeddings for queries and documents
     embeddings = sbert_embed_data(data)

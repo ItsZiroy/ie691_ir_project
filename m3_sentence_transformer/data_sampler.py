@@ -26,6 +26,33 @@ class DataSampler:
         """
         return self.qrels
 
+    def valid_queries(self) -> pd.DataFrame:
+        """
+        Filter queries to only include those with matching documents and queries.
+
+        Returns:
+            pd.DataFrame: Filtered queries.
+        """
+        valid_query_ids = set(self.qrels["query_id"])
+        return self.queries[self.queries["query_id"].isin(valid_query_ids)]
+
+    def sample_queries(self, n) -> pd.DataFrame:
+        """
+        Sample n queries from the dataset.
+
+        Args:
+            n (int): Number of queries to sample.
+
+        Returns:
+            pd.DataFrame: Sampled queries.
+        """
+        valid_queries = self.valid_queries()
+        sample_query = valid_queries.sample(n=n, random_state=42)
+        qrels = self.qrels[self.qrels["query_id"].isin(sample_query["query_id"])]
+
+        combined = qrels.merge(sample_query, left_on="query_id", right_on="query_id", how="left")
+        return combined
+
     def sample(self, relevance_scores, min_sample_count) -> pd.DataFrame:
         """
         Sample equally from each relevance score based on the minimum count and match documents and queries.

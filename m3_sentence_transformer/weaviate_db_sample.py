@@ -1,10 +1,15 @@
+from time import sleep
+import pickle
+
 
 import os
 import sys
 from time import sleep
-
 #workaround to import modules from parent directory
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../")))
+
+from data_sampler import get_sample_docs_with_all_qrels
+
 import pickle
 
 from FlagEmbedding import BGEM3FlagModel
@@ -16,9 +21,6 @@ import weaviate
 
 import base64
 
-import ir_datasets
-
-
 def to_blob(obj):
     return base64.b64encode(pickle.dumps(obj)).decode('utf-8')
 
@@ -27,20 +29,23 @@ load_dotenv()
 model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=True)
 
 client = weaviate.connect_to_local()
-dataset = ir_datasets.load("neuclir/1/multi/trec-2023")
 
-print(f"Running for: {dataset.docs_count()} docs.")
+docs = get_sample_docs_with_all_qrels()
 
-batches = [(i, i+10000) for i in range(0, dataset.docs_count(), 10000)]
-coll = client.collections.get("neuclir_1_mutli_bge_m3")
+for doc in docs.itertuples():
+    if not isinstance(doc.title, str):
+        print(f"doc_id: {doc.doc_id} title: {doc.title}")
 
-outer_progress = tqdm(total=dataset.docs_count(), initial=0)
+batches = [(i, i + 10000) for i in range(0, len(docs), 10000)]
+coll = client.collections.get("neuclir_1_mutli_bge_m3_small")
+
+outer_progress = tqdm(total=len(docs))
+
 
 for i, (start, end) in enumerate(batches):
     if i % 50 == 0 and i != 0:
         print(f"Sleeping for 5 minutes to allow indexing.")
-        sleep(300)
-    batch = pd.DataFrame([doc for doc in dataset.docs_iter()[start:end]])
+    batch = docs[start:end]
     title_embeddings = model.encode(batch["title"].to_list(), return_dense=True, return_sparse=False,
                                     return_colbert_vecs=False)
     # doc_embeddings = model.encode(batch["text"].to_list(), return_dense=True, return_sparse=True, return_colbert_vecs=False)
@@ -49,6 +54,7 @@ for i, (start, end) in enumerate(batches):
     batch = batch.reset_index(drop=True)
     with coll.batch.fixed_size(60, 2) as b:
         for row in batch.itertuples(index=True):
+            # print(row)
             b.add_object(properties={
                 "doc_id": row.doc_id,
                 "title": row.title,
@@ -65,3 +71,4 @@ for i, (start, end) in enumerate(batches):
 
         b.flush()
         sleep(10)
+

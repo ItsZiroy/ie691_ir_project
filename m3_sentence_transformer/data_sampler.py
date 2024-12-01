@@ -1,21 +1,26 @@
+import math
+import random
+
 import pandas as pd
 
 from explore.funcs import load_datasets
+import ir_datasets
+
+
+def get_sample_docs_with_all_qrels():
+    df = pd.read_csv("random_docs_with_qrels.csv", encoding="utf-8", dtype={"doc_id": str, "title": str, "text": str, "url": str})
+    df = df[df["title"].apply(lambda x: isinstance(x, str))]
+    return df
+
 
 class DataSampler:
-    def __init__(self, language):
-        self.language = language
-        self.datasets = load_datasets([language])
-        self.dataset = self.datasets[language]
-        self.docs = pd.DataFrame(self.dataset.docs_iter())
+    def __init__(self, dataset_name):
+        self.dataset_name = dataset_name
+        self.dataset = ir_datasets.load(dataset_name)
         self.queries = pd.DataFrame(self.dataset.queries_iter())
         self.qrels = pd.DataFrame(self.dataset.qrels_iter())
 
-        # Filter qrels to only include those with matching documents and queries
-        valid_doc_ids = set(self.docs["doc_id"])
-        valid_query_ids = set(self.queries["query_id"])
-        self.qrels = self.qrels[self.qrels["doc_id"].isin(valid_doc_ids)]
-        self.qrels = self.qrels[self.qrels["query_id"].isin(valid_query_ids)]
+        self.docstore = self.dataset.docs_store()
 
     def valid_qrels(self) -> pd.DataFrame:
         """
@@ -90,3 +95,48 @@ class DataSampler:
         )
 
         return combined
+
+    def valid_docs(self):
+        """
+        Filter documents to only include those with matching documents and queries.
+
+        Returns:
+            pd.DataFrame: Filtered documents.
+        """
+        valid_doc_ids = set(self.qrels["doc_id"])
+        return self.docstore.get_many(valid_doc_ids)
+
+    def create_sample_docs_with_all_qrels(self, num_samples):
+        arr = []
+        for doc in self.docstore.get_many_iter(set(self.qrels["doc_id"])):
+            arr.append({
+                "doc_id": doc.doc_id,
+                "title": doc.title,
+                "text": doc.text,
+                "url": doc.url
+            })
+        df2 = pd.DataFrame(arr)
+        print(len(df2))
+
+        if num_samples - len(df2) <= 0:
+            raise Exception("Not enough samples selected")
+
+        splitter = math.floor(self.dataset.docs_count() / (num_samples - len(df2)))
+
+
+        random_docs = self.dataset.docs_iter()[::splitter]
+        df = pd.DataFrame(random_docs)[["doc_id", "title", "text", "url"]]
+        print(len(df))
+
+
+        merged = df._append(df2)
+        return merged.drop_duplicates()
+
+
+if __name__ == "__main__":
+    sampler = DataSampler("neuclir/1/multi/trec-2023")
+    df = sampler.create_sample_docs_with_all_qrels(1000000)
+
+    df.to_csv("random_docs_with_qrels_1m.csv", index=False, encoding="utf-8")
+    print(len(df))
+

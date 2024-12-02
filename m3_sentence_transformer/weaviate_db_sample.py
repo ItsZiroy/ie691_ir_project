@@ -30,21 +30,15 @@ model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=True)
 
 client = weaviate.connect_to_local()
 
-docs = get_sample_docs_with_all_qrels()
+docs = get_sample_docs_with_all_qrels("random_docs_with_qrels_200k.csv")
 
-for doc in docs.itertuples():
-    if not isinstance(doc.title, str):
-        print(f"doc_id: {doc.doc_id} title: {doc.title}")
+batches = [(i, i + 10000) for i in range(0, len(docs), 10000)] # 600000
+coll = client.collections.get("neuclir_1_mutli_bge_m3_200k")
 
-batches = [(i, i + 10000) for i in range(0, len(docs), 10000)]
-coll = client.collections.get("neuclir_1_mutli_bge_m3_small")
-
-outer_progress = tqdm(total=len(docs))
+outer_progress = tqdm(total=len(docs), initial=0)
 
 
 for i, (start, end) in enumerate(batches):
-    if i % 50 == 0 and i != 0:
-        print(f"Sleeping for 5 minutes to allow indexing.")
     batch = docs[start:end]
     title_embeddings = model.encode(batch["title"].to_list(), return_dense=True, return_sparse=False,
                                     return_colbert_vecs=False)

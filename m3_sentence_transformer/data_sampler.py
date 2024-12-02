@@ -7,10 +7,12 @@ from explore.funcs import load_datasets
 import ir_datasets
 
 
-def get_sample_docs_with_all_qrels():
-    df = pd.read_csv("random_docs_with_qrels.csv", encoding="utf-8", dtype={"doc_id": str, "title": str, "text": str, "url": str})
-    df = df[df["title"].apply(lambda x: isinstance(x, str))]
-    return df
+def get_sample_docs_with_all_qrels(path: str):
+    d = pd.read_csv(path, encoding="utf-8", dtype={"doc_id": str, "title": str, "text": str, "url": str})
+    d = d[d["title"].apply(lambda x: isinstance(x, str))]
+    d = d.sample(frac=1, random_state=42)
+    print(f"Loaded {len(d)} docs.")
+    return d
 
 
 class DataSampler:

@@ -30,10 +30,10 @@ model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=True)
 
 client = weaviate.connect_to_local()
 
-docs = get_sample_docs_with_all_qrels("random_docs_with_qrels_200k.csv")
+docs = get_sample_docs_with_all_qrels("random_docs_with_qrels_100k.csv")
 
 batches = [(i, i + 10000) for i in range(0, len(docs), 10000)] # 600000
-coll = client.collections.get("neuclir_1_mutli_bge_m3_200k")
+coll = client.collections.get("neuclir_1_mutli_bge_m3_100k")
 
 outer_progress = tqdm(total=len(docs), initial=0)
 

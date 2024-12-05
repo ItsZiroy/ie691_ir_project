@@ -4,7 +4,6 @@ from FlagEmbedding import BGEM3FlagModel
 from tqdm import tqdm
 
 from explore.funcs import load_datasets
-from m3_sentence_transformer.preprocessing import TextPreprocessor
 import sys
 import os
 
@@ -18,7 +17,7 @@ sys.path.append(parent_folder)
 model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=True)
 
 # Initialize ChromaDB client
-chroma_client = chromadb.PersistentClient(path="./db")
+chroma_client = chromadb.PersistentClient(path="../db")
 collection = chroma_client.get_or_create_collection(name="neuclir-titles-zh-bge-m3", metadata={"hnsw:space": "cosine"})
 collection_sparse = chroma_client.get_or_create_collection(name="neuclir-titles-zh-bge-m3-sparse", metadata={"hnsw:space": "cosine"})
 

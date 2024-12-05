@@ -118,17 +118,17 @@ class DataSampler:
                 "url": doc.url
             })
         df2 = pd.DataFrame(arr)
-        print(len(df2))
+        print(f"Found {len(df2)} docs with qrels.")
 
         if num_samples - len(df2) <= 0:
-            raise Exception("Not enough samples selected")
+            raise Exception("Sample size must be larger than qrels")
 
         splitter = math.floor(self.dataset.docs_count() / (num_samples - len(df2)))
 
 
         random_docs = self.dataset.docs_iter()[::splitter]
         df = pd.DataFrame(random_docs)[["doc_id", "title", "text", "url"]]
-        print(len(df))
+        print(f"Upsampled additional {len(df)} documents")
 
 
         merged = df._append(df2)
@@ -137,8 +137,15 @@ class DataSampler:
 
 if __name__ == "__main__":
     sampler = DataSampler("neuclir/1/multi/trec-2023")
-    df = sampler.create_sample_docs_with_all_qrels(1000000)
+    try:
+        sample_size = int(input("Enter the number of samples to generate: "))
+        df = sampler.create_sample_docs_with_all_qrels(sample_size)
 
-    df.to_csv("random_docs_with_qrels_1m.csv", index=False, encoding="utf-8")
-    print(len(df))
+        df.to_csv(f"random_docs_with_qrels_{sample_size}.csv", index=False, encoding="utf-8")
+        print(f"Successfully sampled {len(df)} documents")
+
+    except ValueError:
+        print("Invalid input. Specify an integer value.")
+    except Exception as e:
+        print(e)
 

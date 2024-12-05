@@ -25,12 +25,12 @@ collbert_collection_name = "neuclir_1_mutli_bge_m3_100k_colbert"
 ```
 
 > [!TIP]
-> In my experience you should create a fresh instance of weaviate for each sample set you would like to upload.
-> You can do so by altering the storage file path in the `weaviate/docker-compose.yml` file.
+> In my experience you should create a fresh instance of weaviate for each sample set you would like to upload 
+> to preserve ram. You can do so by altering the volume file path in the `weaviate/docker-compose.yml` file.
 
 ### Inserting Embeddings into Weaviate
 
-Modify the following lines of the `weaviate_db_sample.py` script to match your setup:
+Modify the following lines of the [`weaviate_db_sample.py`](weaviate_db_sample.py) script to match your setup:
 
 File path to the sample csv:
 ```python
@@ -51,7 +51,7 @@ The inserts will take a while, depending on the size of the dataset.
 
 ### Insert Colbert Embeddings into Weaviate
 
-The script can be found in `weaviate_db_sample_colbert.py`.
+The script can be found in [`weaviate_db_sample_colbert.py`](weaviate_db_sample_colbert.py).
 You have to modify the same lines as [above](#insert-colbert-embeddings-into-weaviate) and additonally edit the
 following line to match the collection you created for colbert:
 
@@ -67,7 +67,7 @@ poetry run python weaviate_db_sample_colbert.py
 
 ### Evaluation
 
-To evaluate the runs, simply run the `evaluation_weaviate.ipynb` jupyter notebook:
+To evaluate the runs, simply run the [`evaluation_weaviate.ipynb`](evaluation_weaviate.ipynb) jupyter notebook:
 
 ### Misc
-All other files and experiments that lead me to the final setup can be found in the `misc` folder.
+All other files and experiments that lead me to the final setup can be found in the [`misc`](./misc) folder.

@@ -1,5 +1,4 @@
-# ie_691_ir_project
-
+# IE691 Information Retrieval Project
 ## Installing Dependencies
 This project uses Poetry to manage dependencies. To install it, 
 you can use the [installation guide](https://python-poetry.org/docs/#installation) on their website.

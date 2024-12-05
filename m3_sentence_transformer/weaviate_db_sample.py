@@ -1,7 +1,3 @@
-from time import sleep
-import pickle
-
-
 import os
 import sys
 from time import sleep
@@ -15,8 +11,6 @@ import pickle
 from FlagEmbedding import BGEM3FlagModel
 from dotenv import load_dotenv
 from tqdm import tqdm
-import pandas as pd
-from explore.funcs import load_datasets
 import weaviate
 
 import base64
@@ -34,8 +28,11 @@ docs = get_sample_docs_with_all_qrels("random_docs_with_qrels_100k.csv")
 
 batches = [(i, i + 10000) for i in range(0, len(docs), 10000)] # 600000
 coll = client.collections.get("neuclir_1_mutli_bge_m3_100k")
+if not coll.exists():
+    raise Exception("Weaviate Collection does not exist. Please Create it first.")
 
-outer_progress = tqdm(total=len(docs), initial=0)
+
+outer_progress = tqdm(total=len(docs), initial=0, desc="Adding documents to Weaviate")
 
 
 for i, (start, end) in enumerate(batches):

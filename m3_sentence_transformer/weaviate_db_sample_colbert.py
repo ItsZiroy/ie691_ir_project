@@ -1,7 +1,3 @@
-from time import sleep
-import pickle
-
-
 import os
 import sys
 from time import sleep
@@ -16,7 +12,6 @@ from data_sampler import get_sample_docs_with_all_qrels
 import pickle
 
 from FlagEmbedding import BGEM3FlagModel
-from dotenv import load_dotenv
 from tqdm import tqdm
 import weaviate
 
@@ -25,7 +20,6 @@ import base64
 def to_blob(obj):
     return base64.b64encode(pickle.dumps(obj)).decode('utf-8')
 
-load_dotenv()
 
 model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=True)
 
@@ -37,7 +31,7 @@ batches = [(i, i + 10000) for i in range(0, len(docs), 10000)]
 coll = client.collections.get("neuclir_1_mutli_bge_m3_100k")
 coll_colbert = client.collections.get("neuclir_1_mutli_bge_m3_100k_colbert")
 
-outer_progress = tqdm(total=len(docs), initial=0)
+outer_progress = tqdm(total=len(docs), initial=0, desc="Adding documents to Weaviate")
 
 
 def quantize_vector(vector):

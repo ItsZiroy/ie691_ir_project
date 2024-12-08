@@ -60,7 +60,7 @@ from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
 -----
 ## LMIR-100K Retrieval System
 
-### Requirements {#requirements}
+### Requirements
 
 Install the required dependencies:
 
@@ -68,7 +68,7 @@ Install the required dependencies:
 pip install numpy pandas nltk pymystem3 ir-datasets ir-measures
 ```
 
-### Imports {#imports}
+### Imports
 
 ``` bash
 import numpy as np
@@ -82,7 +82,7 @@ import ir_measures
 from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
 ```
 
-### Steps to Run the Project {#steps-to-run-the-project}
+### Steps to Run the Project
 
 #### Subset the Dataset to 100K Documents:
 
@@ -90,25 +90,25 @@ from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
 -   Randomly sample additional documents to reach a total of 100,000.
 -   Save the subset as a new dataset.
 
-#### Preprocess the Documents: {#preprocess-the-documents}
+#### Preprocess the Documents: 
 
 -   Apply tokenization, lemmatization, and cleaning as done in LMIR.
 
-#### Preprocess the Queries: {#preprocess-the-queries}
+#### Preprocess the Queries:
 
 -   Use consistent preprocessing steps for queries.
 
-#### Create Unigram Language Models: {#create-unigram-language-models}
+#### Create Unigram Language Models:
 
 -   Build unigram language models with smoothing for documents and
     queries in the 100K subset.
 
-#### Calculate Similarity Scores Using KL Divergence: {#calculate-similarity-scores-using-kl-divergence}
+#### Calculate Similarity Scores Using KL Divergence:
 
 -   Compute KL divergence between query and document models for ranking.
 -   Evaluate the subset using the same metrics as LMIR.
 
-#### Output Results: {#output-results}
+#### Output Results:
 
 -   Save ranked results to a CSV file.
 -   Evaluate the model\'s performance on the reduced dataset.

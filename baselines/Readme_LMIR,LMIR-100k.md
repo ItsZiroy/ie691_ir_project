@@ -54,8 +54,8 @@ from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
 #### Output Results:
 
 -   Save ranked results to a CSV file.
--   Evaluate the model using metrics such as <nDCG\@20>, <P\@5>, and
-    <R\@1000>.
+-   Evaluate the model using metrics such as nDCG\@20, P\@5, and
+    R\@1000.
 
 -----
 ## LMIR-100K Retrieval System

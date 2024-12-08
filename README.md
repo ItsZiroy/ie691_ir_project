@@ -34,3 +34,5 @@ https://1drv.ms/u/c/bbf8be11fdee265a/EWC4kI_vdTBEnPsFgskGuv0Bw4ZcDSaH-oyOqXczgvN
 To reproduce the results use the dedicated README.md in the respective folder.
 
 - [BGE M3 | ColBERT](m3_sentence_transformer/README.md)
+- [SBERT](sbert_sentence_transformer/README.md)
+

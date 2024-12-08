@@ -1,7 +1,7 @@
 
-# LMIR and LMIR-100K Retrieval Systems
+# LMIR and LMIR-100K baselines
 
-## LMIR Retrieval System
+## LMIR
 
 ### Requirements
 
@@ -58,7 +58,7 @@ from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
     R\@1000.
 
 -----
-## LMIR-100K Retrieval System
+## LMIR-100K
 
 ### Requirements
 

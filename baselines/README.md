@@ -1,5 +1,5 @@
 # TF-IDF Retrieval Implementation
-This project demonstrates how to implement a TF-IDF-based retrieval system to process queries and rank documents by relevance. The implementation is Python-based and makes use of commonly used libraries for natural language processing and information retrieval.
+This project demonstrates how to implement a TF-IDF-based retrieval system to process queries and rank documents by relevance. 
 
 # Requirements
 pip install numpy pandas scikit-learn nltk

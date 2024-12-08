@@ -1,22 +1,4 @@
----
-jupyter:
-  kernelspec:
-    display_name: Python (jupyter_env)
-    language: python
-    name: jupyter_env
-  language_info:
-    codemirror_mode:
-      name: ipython
-      version: 3
-    file_extension: .py
-    mimetype: text/x-python
-    name: python
-    nbconvert_exporter: python
-    pygments_lexer: ipython3
-    version: 3.9.20
-  nbformat: 4
-  nbformat_minor: 5
----
+
 
 ::: {#52e86356 .cell .markdown}
 # LMIR and LMIR-100K Retrieval Systems

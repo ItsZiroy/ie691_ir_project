@@ -1,6 +1,4 @@
 
-
-::: {#52e86356 .cell .markdown}
 # LMIR and LMIR-100K Retrieval Systems
 
 ## LMIR Retrieval System
@@ -58,9 +56,8 @@ from ir_measures import nDCG, P, Judged, RBP, AP, RR, R
 -   Save ranked results to a CSV file.
 -   Evaluate the model using metrics such as <nDCG@20>, <P@5>, and
     <R@1000>.
-:::
 
-::: {#ecab0c95 .cell .markdown}
+-----
 ## LMIR-100K Retrieval System
 
 ### Requirements {#requirements}

@@ -35,4 +35,4 @@ To reproduce the results use the dedicated README.md in the respective folder.
 
 - [BGE M3 | ColBERT](m3_sentence_transformer/README.md)
 - [SBERT](sbert_sentence_transformer/README.md)
-- [LMIR | LMIR-100k](sbert_sentence_transformer/README.md)
+- [LMIR | LMIR-100k](baselines/Readme_LMIR,LMIR-100k.md)
